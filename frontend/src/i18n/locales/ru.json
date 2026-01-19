@@ -1,0 +1,88 @@
+{
+  "common": {
+    "appName": "EXELIX",
+    "loading": "Загрузка...",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Изменить",
+    "next": "Далее",
+    "back": "Назад",
+    "submit": "Отправить",
+    "close": "Закрыть",
+    "yes": "Да",
+    "no": "Нет",
+    "success": "Успешно",
+    "error": "Ошибка"
+  },
+  "auth": {
+    "register": "Регистрация",
+    "login": "Войти",
+    "logout": "Выход",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "phone": "Телефон",
+    "telegram": "Telegram",
+    "photo": "Фото",
+    "uploadPhoto": "Загрузить фото",
+    "registerSuccess": "Вы успешно зарегистрировались",
+    "addTelegram": "Добавить Telegram",
+    "telegramAdded": "Telegram успешно добавлен",
+    "profileUpdated": "Профиль успешно обновлен"
+  },
+  "profile": {
+    "openProfile": "Открытый профиль",
+    "closedProfile": "Закрытый профиль",
+    "openProfileDesc": "Ваше имя и фото видны отправителям уведомлений",
+    "closedProfileDesc": "Ваши данные скрыты от отправителей",
+    "imAtMyCar": "Я вышел к машине",
+    "activeNow": "Активен сейчас"
+  },
+  "notifications": {
+    "sendNotification": "Отправить уведомление",
+    "notificationSent": "Уведомление успешно отправлено",
+    "selectNotifications": "Выберите уведомления",
+    "greeting": "Здравствуйте!",
+    "notificationReceived": "Вам отправлено уведомление:",
+    "types": {
+      "blocking": "Ваш автомобиль перекрывает проезд",
+      "wrongParking": "Припаркован в неправильном месте",
+      "alarm": "Сработала сигнализация",
+      "evacuation": "Ваш автомобиль эвакуируют",
+      "minorAccident": "Небольшое ДТП",
+      "seriousAccident": "Серьёзное ДТП"
+    }
+  },
+  "qr": {
+    "scan": "Сканировать QR",
+    "generated": "QR-коды успешно загружены"
+  },
+  "admin": {
+    "dashboard": "Панель администратора",
+    "statistics": "Статистика",
+    "users": "Пользователи",
+    "generateQR": "Генерация QR",
+    "downloadQR": "Скачать QR-коды",
+    "totalUsers": "Всего пользователей",
+    "successfulRequests": "Успешные запросы",
+    "failedRequests": "Неуспешные запросы",
+    "totalRequests": "Всего запросов",
+    "inactiveQR": "Неактивные QR",
+    "showMore": "Показать ещё"
+  },
+  "header": {
+    "installApp": "Установить приложение",
+    "language": "Язык"
+  },
+  "contacts": {
+    "call": "Позвонить",
+    "telegramCopied": "Telegram никнейм успешно скопирован"
+  },
+  "errors": {
+    "required": "Обязательное поле",
+    "invalidPhone": "Некорректный номер телефона",
+    "invalidTelegram": "Некорректный Telegram",
+    "limitReached": "Достигнут лимит отправки",
+    "notFound": "Страница не найдена"
+  }
+}

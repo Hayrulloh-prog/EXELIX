@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  phone       String   @unique
+  telegram    String?
+  photo       String?
+  profileType String   @default("closed")
+  activeNow   Boolean  @default(false)
+  qrToken     String   @unique
+  language    String   @default("ru")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  notifications Notification[]
+  qrCodes       QRCode[]
+
+  @@index([qrToken])
+  @@index([phone])
+}
+
+model QRCode {
+  id        String   @id @default(cuid())
+  qrToken   String   @unique
+  status    String   @default("inactive")
+  userId    String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([qrToken])
+  @@index([status])
+}
+
+model Notification {
+  id             String    @id @default(cuid())
+  userId         String
+  notificationId Int
+  type           String
+  message        String
+  sent           Boolean   @default(false)
+  sentAt         DateTime?
+  createdAt      DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model NotificationLog {
+  id              String   @id @default(cuid())
+  qrToken         String
+  notificationIds String
+  fingerprint     String?
+  ipAddress       String?
+  success         Boolean  @default(true)
+  errorMessage    String?
+  createdAt       DateTime @default(now())
+
+  @@index([qrToken])
+  @@index([createdAt])
+}
+
+model Statistics {
+  id                 String   @id @default(cuid())
+  totalUsers         Int      @default(0)
+  successfulRequests Int      @default(0)
+  failedRequests     Int      @default(0)
+  totalRequests      Int      @default(0)
+  inactiveQR         Int      @default(0)
+  updatedAt          DateTime @default(now()) @updatedAt
+
+  @@unique([id])
+}

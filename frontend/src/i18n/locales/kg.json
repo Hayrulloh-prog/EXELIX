@@ -1,0 +1,88 @@
+{
+  "common": {
+    "appName": "EXELIX",
+    "loading": "Жүктөлүүдө...",
+    "save": "Сактоо",
+    "cancel": "Жокко чыгаруу",
+    "delete": "Жок кылуу",
+    "edit": "Өзгөртүү",
+    "next": "Кийинки",
+    "back": "Артка",
+    "submit": "Жөнөтүү",
+    "close": "Жабуу",
+    "yes": "Ооба",
+    "no": "Жок",
+    "success": "Ийгиликтүү",
+    "error": "Ката"
+  },
+  "auth": {
+    "register": "Каттоо",
+    "login": "Кирүү",
+    "logout": "Чыгуу",
+    "firstName": "Аты",
+    "lastName": "Фамилиясы",
+    "phone": "Телефон",
+    "telegram": "Telegram",
+    "photo": "Фото",
+    "uploadPhoto": "Фото жүктөө",
+    "registerSuccess": "Сиз ийгиликтүү катталдыңыз",
+    "addTelegram": "Telegram кошуу",
+    "telegramAdded": "Telegram ийгиликтүү кошулду",
+    "profileUpdated": "Профиль ийгиликтүү жаңыланды"
+  },
+  "profile": {
+    "openProfile": "Ачык профиль",
+    "closedProfile": "Жабык профиль",
+    "openProfileDesc": "Сиздин атыңыз жана фотоңуз билдирүү жөнөтүүчүлөргө көрүнүп турат",
+    "closedProfileDesc": "Сиздин маалыматыңыз жөнөтүүчүлөрдөн жашырылган",
+    "imAtMyCar": "Мен машинамга чыктым",
+    "activeNow": "Азыр активдүү"
+  },
+  "notifications": {
+    "sendNotification": "Билдирүү жөнөтүү",
+    "notificationSent": "Билдирүү ийгиликтүү жөнөтүлдү",
+    "selectNotifications": "Билдирүүлөрдү тандаңыз",
+    "greeting": "Саламатсызбы!",
+    "notificationReceived": "Сизге билдирүү жөнөтүлдү:",
+    "types": {
+      "blocking": "Сиздин машинаңыз жолду бүгүп турат",
+      "wrongParking": "Туура эмес жерге парковкаланган",
+      "alarm": "Сигнализация иштетилди",
+      "evacuation": "Сиздин машинаңыз эвакуацияланып жатат",
+      "minorAccident": "Чамасында ДТП",
+      "seriousAccident": "Олуттуу ДТП"
+    }
+  },
+  "qr": {
+    "scan": "QR сканердөө",
+    "generated": "QR коддору ийгиликтүү жүктөлдү"
+  },
+  "admin": {
+    "dashboard": "Админ панели",
+    "statistics": "Статистика",
+    "users": "Колдонуучулар",
+    "generateQR": "QR генерация",
+    "downloadQR": "QR коддорун жүктөө",
+    "totalUsers": "Жалпы колдонуучулар",
+    "successfulRequests": "Ийгиликтүү суроолор",
+    "failedRequests": "Ийгиликсиз суроолор",
+    "totalRequests": "Жалпы суроолор",
+    "inactiveQR": "Активдүү эмес QR",
+    "showMore": "Көрсөтүү"
+  },
+  "header": {
+    "installApp": "Колдонмону орнотуу",
+    "language": "Тил"
+  },
+  "contacts": {
+    "call": "Чалуу",
+    "telegramCopied": "Telegram никнейм ийгиликтүү көчүрүлдү"
+  },
+  "errors": {
+    "required": "Милдеттүү талаа",
+    "invalidPhone": "Туура эмес телефон номуру",
+    "invalidTelegram": "Туура эмес Telegram",
+    "limitReached": "Лимитке жетти",
+    "notFound": "Баракча табылган жок"
+  }
+}

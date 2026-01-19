@@ -1,0 +1,88 @@
+{
+  "common": {
+    "appName": "EXELIX",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "success": "Success",
+    "error": "Error"
+  },
+  "auth": {
+    "register": "Registration",
+    "login": "Login",
+    "logout": "Logout",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "telegram": "Telegram",
+    "photo": "Photo",
+    "uploadPhoto": "Upload Photo",
+    "registerSuccess": "You have successfully registered",
+    "addTelegram": "Add Telegram",
+    "telegramAdded": "Telegram successfully added",
+    "profileUpdated": "Profile successfully updated"
+  },
+  "profile": {
+    "openProfile": "Open Profile",
+    "closedProfile": "Closed Profile",
+    "openProfileDesc": "Your name and photo are visible to notification senders",
+    "closedProfileDesc": "Your data is hidden from senders",
+    "imAtMyCar": "I'm at my car",
+    "activeNow": "Active now"
+  },
+  "notifications": {
+    "sendNotification": "Send Notification",
+    "notificationSent": "Notification successfully sent",
+    "selectNotifications": "Select Notifications",
+    "greeting": "Hello!",
+    "notificationReceived": "You have received a notification:",
+    "types": {
+      "blocking": "Your car is blocking the passage",
+      "wrongParking": "Parked in wrong place",
+      "alarm": "Alarm activated",
+      "evacuation": "Your car is being towed",
+      "minorAccident": "Minor accident",
+      "seriousAccident": "Serious accident"
+    }
+  },
+  "qr": {
+    "scan": "Scan QR",
+    "generated": "QR codes successfully downloaded"
+  },
+  "admin": {
+    "dashboard": "Admin Panel",
+    "statistics": "Statistics",
+    "users": "Users",
+    "generateQR": "QR Generation",
+    "downloadQR": "Download QR Codes",
+    "totalUsers": "Total Users",
+    "successfulRequests": "Successful Requests",
+    "failedRequests": "Failed Requests",
+    "totalRequests": "Total Requests",
+    "inactiveQR": "Inactive QR",
+    "showMore": "Show More"
+  },
+  "header": {
+    "installApp": "Install App",
+    "language": "Language"
+  },
+  "contacts": {
+    "call": "Call",
+    "telegramCopied": "Telegram username successfully copied"
+  },
+  "errors": {
+    "required": "Required field",
+    "invalidPhone": "Invalid phone number",
+    "invalidTelegram": "Invalid Telegram",
+    "limitReached": "Rate limit reached",
+    "notFound": "Page not found"
+  }
+}
