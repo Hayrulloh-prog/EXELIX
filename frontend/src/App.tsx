@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import useStore from './store/useStore'
@@ -26,7 +26,7 @@ function App() {
   }, [language, i18n])
 
   return (
-    <BrowserRouter>
+    <Router>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -80,7 +80,7 @@ function App() {
           }}
         />
       </div>
-    </BrowserRouter>
+    </Router>
   )
 }
 
