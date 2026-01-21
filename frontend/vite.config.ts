@@ -49,8 +49,10 @@ export default defineConfig({
     proxy: {
       '/api': { target: 'http://localhost:5000', changeOrigin: true }
     },
-    // **Поддержка маршрутов SPA**
-    historyApiFallback: true
+    // правильная настройка для SPA
+    fs: {
+      strict: false
+    }
   }, // ← вот запятая!
   build: {
     rollupOptions: {

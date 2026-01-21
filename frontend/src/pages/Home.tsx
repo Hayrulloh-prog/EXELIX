@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { QrCode, Shield, Bell, Smartphone } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
   const { t } = useTranslation()
@@ -66,6 +67,9 @@ export default function Home() {
           <p className="text-gray-600 dark:text-gray-300 mb-4">
             Отсканируйте QR-код на вашем автомобиле для регистрации
           </p>
+          <Link to="/dashboard">
+            dashboard
+          </Link>
         </div>
       </div>
     </div>
