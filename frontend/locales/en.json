@@ -1,0 +1,90 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit"
+  },
+  "home": {
+    "title": "EXELIX",
+    "subtitle": "Contact car owner via QR code",
+    "description": "EXELIX allows you to contact the car owner without exposing their personal information publicly. Simply scan the QR code on the car.",
+    "howItWorks": "How it works",
+    "step1": "Owner registers via QR code",
+    "step2": "QR code is placed on the car",
+    "step3": "Anyone can scan and send notification"
+  },
+  "register": {
+    "title": "Registration",
+    "step1": "Step 1: Personal Information",
+    "step2": "Step 2: Status",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "phoneCountry": "Country",
+    "telegram": "Telegram (optional)",
+    "avatar": "Profile Photo",
+    "status": "Status",
+    "statusOpen": "Open",
+    "statusClosed": "Closed",
+    "statusOpenDesc": "Name and photo visible to everyone",
+    "statusClosedDesc": "Name and photo hidden",
+    "success": "You have successfully registered",
+    "error": "Registration error"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "downloadApp": "Download EXELIX App",
+    "profile": "Profile",
+    "status": "Status",
+    "telegram": "Telegram",
+    "copyTelegram": "Copy Telegram",
+    "addTelegram": "Add Telegram",
+    "edit": "Edit",
+    "call": "Call",
+    "telegramCopied": "Telegram copied",
+    "saved": "Successfully saved"
+  },
+  "notifications": {
+    "title": "Send Notification",
+    "selectTypes": "Select notification type",
+    "blocking": "Car is blocking the road",
+    "parking": "Wrong parking",
+    "alarm": "Alarm activated",
+    "evacuation": "Car is being towed",
+    "minorAccident": "Minor accident",
+    "majorAccident": "Major accident",
+    "send": "Send",
+    "success": "Notification sent",
+    "rateLimit": "Daily limit reached",
+    "ownerLimit": "Owner has reached daily limit"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "login": "Login",
+    "username": "Username",
+    "password": "Password",
+    "stats": "Statistics",
+    "totalUsers": "Total Users",
+    "totalRequests": "Total Requests",
+    "successfulRequests": "Successful Requests",
+    "failedRequests": "Failed Requests",
+    "inactiveQRCodes": "Inactive QR Codes",
+    "users": "Users",
+    "generateQR": "Download QR Codes",
+    "qrGenerated": "QR codes successfully downloaded",
+    "showMore": "Show More"
+  },
+  "language": {
+    "ru": "Русский",
+    "ky": "Кыргызский",
+    "en": "English"
+  }
+}
