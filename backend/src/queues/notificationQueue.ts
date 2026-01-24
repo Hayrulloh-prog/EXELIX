@@ -1,5 +1,4 @@
 import Queue from "bull";
-import { RedisOptions } from "bull";
 
 const redisUrl = process.env.REDIS_URL || "redis://127.0.0.1:6379";
 

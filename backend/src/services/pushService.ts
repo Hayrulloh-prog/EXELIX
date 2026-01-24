@@ -22,7 +22,7 @@ export interface PushSubscription {
 export const sendPushNotification = async (
   subscription: PushSubscription,
   message: string,
-): Promise<void> => {
+): Promise<"OK" | "EXPIRED" | void> => {
   if (!vapidPublicKey || !vapidPrivateKey) {
     console.warn("VAPID keys not configured, skipping push notification");
     return;

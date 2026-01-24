@@ -1,10 +1,13 @@
-import { Response } from 'express';
-import { AuthRequest } from '../middleware/auth';
-import { query } from '../config/database';
-import { generateQRCodes, getInactiveQRCodesCount } from '../services/qrService';
-import { generateAdminToken } from '../utils/jwt';
-import bcrypt from 'bcryptjs';
-import QRCode from 'qrcode';
+import { Response } from "express";
+import { AuthRequest } from "../middleware/auth";
+import { query } from "../config/database";
+import {
+  generateQRCodes,
+  getInactiveQRCodesCount,
+} from "../services/qrService";
+import { generateAdminToken } from "../utils/jwt";
+import bcrypt from "bcryptjs";
+import QRCode from "qrcode";
 
 // --------------------
 // Публичный метод: вход в админку
@@ -15,8 +18,8 @@ export const loginAdmin = async (req: AuthRequest, res: Response) => {
   if (!username || !password) {
     return res.status(400).json({
       success: false,
-      error: 'VALIDATION_ERROR',
-      message: 'Username and password required'
+      error: "VALIDATION_ERROR",
+      message: "Username and password required",
     });
   }
 
@@ -25,53 +28,57 @@ export const loginAdmin = async (req: AuthRequest, res: Response) => {
 
   // Сначала пробуем найти в базе данных
   try {
-    const result = await query(`SELECT * FROM admins WHERE username = $1`, [username]);
+    const result = await query(`SELECT * FROM admins WHERE username = $1`, [
+      username,
+    ]);
     if (result.rows.length > 0) {
       admin = result.rows[0];
       const isValid = await bcrypt.compare(password, admin.password_hash);
       if (isValid) {
         // Update last login
-        await query(`UPDATE admins SET last_login = NOW() WHERE id = $1`, [admin.id]);
-        const token = generateAdminToken({ userId: admin.id, type: 'admin' });
+        await query(`UPDATE admins SET last_login = NOW() WHERE id = $1`, [
+          admin.id,
+        ]);
+        const token = generateAdminToken({ userId: admin.id, type: "admin" });
         return res.json({
           success: true,
           token,
           admin: {
             id: admin.id,
             username: admin.username,
-          }
+          },
         });
       }
     }
   } catch (error) {
-    console.error('Database admin check error:', error);
+    console.error("Database admin check error:", error);
   }
 
   // Если не нашли в БД, проверяем через .env (для простоты в разработке)
-  const envLogin = process.env.ADMIN_LOGIN || process.env.ADMIN_USERNAME || 'hayrulloh1706@gmail.com';
-  const envPassword = process.env.ADMIN_PASSWORD || '20050617in';
+  const envLogin =
+    process.env.ADMIN_LOGIN ||
+    process.env.ADMIN_USERNAME ||
+    "hayrulloh1706@gmail.com";
+  const envPassword = process.env.ADMIN_PASSWORD || "20050617in";
 
-  if (
-    username === envLogin &&
-    password === envPassword
-  ) {
+  if (username === envLogin && password === envPassword) {
     // Создаем временный admin ID для JWT
-    const adminId = 'env-admin-' + Date.now();
-    const token = generateAdminToken({ userId: adminId, type: 'admin' });
+    const adminId = "env-admin-" + Date.now();
+    const token = generateAdminToken({ userId: adminId, type: "admin" });
     return res.json({
       success: true,
       token,
       admin: {
         id: adminId,
         username: username,
-      }
+      },
     });
   }
 
   return res.status(401).json({
     success: false,
-    error: 'UNAUTHORIZED',
-    message: 'Invalid credentials'
+    error: "UNAUTHORIZED",
+    message: "Invalid credentials",
   });
 };
 
@@ -82,7 +89,9 @@ export const getStats = async (req: AuthRequest, res: Response) => {
   const usersResult = await query(`SELECT COUNT(*) as count FROM users`);
   const totalUsers = parseInt(usersResult.rows[0].count);
 
-  const requestsResult = await query(`SELECT COUNT(*) as count FROM notifications`);
+  const requestsResult = await query(
+    `SELECT COUNT(*) as count FROM notifications`,
+  );
   const totalRequests = parseInt(requestsResult.rows[0].count);
 
   const successfulRequests = totalRequests;
@@ -113,14 +122,14 @@ export const getUsers = async (req: AuthRequest, res: Response) => {
      FROM users
      ORDER BY created_at DESC
      LIMIT $1 OFFSET $2`,
-    [limit, offset]
+    [limit, offset],
   );
 
   const countResult = await query(`SELECT COUNT(*) as count FROM users`);
   const total = parseInt(countResult.rows[0].count);
 
   res.json({
-    users: result.rows.map((row) => ({
+    users: result.rows.map((row: any) => ({
       id: row.id,
       firstName: row.first_name,
       lastName: row.last_name,
@@ -151,14 +160,14 @@ export const generateQR = async (req: AuthRequest, res: Response) => {
 
   const qrCodes = await Promise.all(
     tokens.map(async (token) => {
-      const url = `${process.env.FRONTEND_URL || 'http://localhost:3001'}/qr?token=${token}`;
+      const url = `${process.env.FRONTEND_URL || "http://localhost:3001"}/qr?token=${token}`;
       const svg = await QRCode.toString(url, {
-        type: 'svg',
+        type: "svg",
         width: 300,
         margin: 2,
       });
       return { token, svg };
-    })
+    }),
   );
 
   const columns = Math.min(10, count);
@@ -170,17 +179,17 @@ export const generateQR = async (req: AuthRequest, res: Response) => {
       const y = Math.floor(index / 10) * 320;
       return `<g transform="translate(${x}, ${y})">${qr.svg}</g>`;
     })
-    .join('\n');
+    .join("\n");
 
   const combinedSVG = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${columns * 320}" height="${rows * 320}">
 ${svgContent}
 </svg>`;
 
-  res.setHeader('Content-Type', 'image/svg+xml');
+  res.setHeader("Content-Type", "image/svg+xml");
   res.setHeader(
-    'Content-Disposition',
-    `attachment; filename="qr-codes-${Date.now()}.svg"`
+    "Content-Disposition",
+    `attachment; filename="qr-codes-${Date.now()}.svg"`,
   );
   res.send(combinedSVG);
 };

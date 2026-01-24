@@ -13,12 +13,13 @@ pool
   .then(() => {
     console.log("✅ Database connected");
   })
-  .catch((err) => {
+  .catch((err: any) => {
     console.error("❌ Database connection error:", err);
     process.exit(1);
   });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+// ВАЖНО: Fly.io требует слушать на 0.0.0.0, а не localhost!
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on 0.0.0.0:${PORT}`); // ← Изменено здесь
   console.log(`📡 Environment: ${process.env.NODE_ENV || "development"}`);
 });
