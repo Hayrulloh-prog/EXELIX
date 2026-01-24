@@ -1,11 +1,11 @@
-import webpush from 'web-push';
-import dotenv from 'dotenv';
+import webpush from "web-push";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const vapidPublicKey = process.env.VAPID_PUBLIC_KEY || '';
-const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || '';
-const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:admin@exelix.com';
+const vapidPublicKey = process.env.VAPID_PUBLIC_KEY || "";
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || "";
+const vapidSubject = process.env.VAPID_SUBJECT || "mailto:admin@exelix.com";
 
 if (vapidPublicKey && vapidPrivateKey) {
   webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
@@ -21,10 +21,10 @@ export interface PushSubscription {
 
 export const sendPushNotification = async (
   subscription: PushSubscription,
-  message: string
+  message: string,
 ): Promise<void> => {
   if (!vapidPublicKey || !vapidPrivateKey) {
-    console.warn('VAPID keys not configured, skipping push notification');
+    console.warn("VAPID keys not configured, skipping push notification");
     return;
   }
 
@@ -32,19 +32,19 @@ export const sendPushNotification = async (
     await webpush.sendNotification(
       subscription,
       JSON.stringify({
-        title: 'EXELIX',
+        title: "EXELIX",
         body: message,
-        icon: '/icon-192x192.png',
-        badge: '/icon-96x96.png',
-      })
+        icon: "/icon-192x192.png",
+        badge: "/icon-96x96.png",
+      }),
     );
+    return "OK";
   } catch (error: any) {
     if (error.statusCode === 410) {
-      // Subscription expired
-      console.log('Push subscription expired');
-    } else {
-      throw error;
+      console.log("Push subscription expired");
+      return "EXPIRED";
     }
+    throw error;
   }
 };
 

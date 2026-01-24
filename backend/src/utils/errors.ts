@@ -26,11 +26,23 @@ export const errorHandler = (err: any, req: any, res: any, next: any) => {
     });
   }
 
+  // Handle validation errors from express-validator
+  if (err.array && typeof err.array === 'function') {
+    const errors = err.array();
+    return res.status(400).json({
+      success: false,
+      error: 'VALIDATION_ERROR',
+      message: errors[0]?.msg || 'Validation failed',
+      errors: errors,
+    });
+  }
+
   console.error('Unhandled error:', err);
+  console.error('Error stack:', err.stack);
 
   return res.status(500).json({
     success: false,
     error: 'INTERNAL_ERROR',
-    message: 'Internal server error',
+    message: err.message || 'Internal server error',
   });
 };

@@ -108,7 +108,9 @@ EXELIX3/
 5. **Access:**
    - Frontend: http://localhost:3000
    - Backend: http://localhost:3001
-   - Admin: http://localhost:3000/admin (admin/admin123)
+   - Admin: http://localhost:3000/admin
+     - Username: `hayrulloh1706@gmail.com`
+     - Password: `20050617in`
 
 ## 🔧 Configuration Required
 

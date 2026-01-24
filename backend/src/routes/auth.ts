@@ -7,6 +7,6 @@ const router = Router();
 
 router.post('/register', authRateLimit, validateRegister, register);
 router.post('/login', authRateLimit, login);
-router.post('/admin/login', authRateLimit, validateAdminLogin, adminLogin);
+// Admin login moved to /api/v1/admin/login
 
 export default router;

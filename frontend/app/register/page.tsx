@@ -24,6 +24,7 @@ export default function RegisterPage() {
     telegram: '',
     avatar: '',
     status: 'closed',
+    language: 'ru',
   });
 
   useEffect(() => {
@@ -57,8 +58,8 @@ export default function RegisterPage() {
   };
 
   const handleNext = () => {
-    if (!formData.firstName || !formData.lastName || !formData.phone) {
-      toast.error('Please fill all required fields');
+    if (!formData.firstName || !formData.lastName || !formData.phone || !formData.avatar) {
+      toast.error(t('register.avatarRequired') || 'Please fill all required fields including photo');
       return;
     }
     setStep(2);
@@ -67,18 +68,61 @@ export default function RegisterPage() {
   const handleSubmit = async () => {
     if (!qrToken) return;
 
+    // Проверка всех обязательных полей
+    if (!formData.firstName || !formData.lastName || !formData.phone || !formData.avatar) {
+      toast.error('Пожалуйста, заполните все обязательные поля');
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await api.post('/auth/register', {
+      // Очищаем telegram если пустой
+      const submitData = {
         qrToken,
-        ...formData,
-      });
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        phone: formData.phone.trim(),
+        phoneCountry: formData.phoneCountry,
+        telegram: formData.telegram?.trim() || null,
+        avatar: formData.avatar,
+        status: formData.status,
+        language: 'ru', // можно добавить выбор языка
+      };
 
-      localStorage.setItem('token', response.data.token);
-      toast.success(t('register.success'));
-      router.push('/dashboard');
+      console.log('Submitting registration:', { ...submitData, avatar: '[base64 data]' });
+
+      const response = await api.post('/auth/register', submitData);
+
+      if (response.data.success && response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        toast.success(t('register.success'));
+        router.push('/dashboard');
+      } else {
+        toast.error('Ошибка регистрации');
+        setLoading(false);
+      }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || t('register.error'));
+      console.error('Registration error:', error);
+      console.error('Error response:', error.response?.data);
+
+      let errorMessage = t('register.error');
+
+      if (error.response?.data) {
+        // Пробуем получить сообщение об ошибке
+        if (error.response.data.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.response.data.errors && error.response.data.errors.length > 0) {
+          // Если есть массив ошибок валидации
+          const firstError = error.response.data.errors[0];
+          errorMessage = firstError.msg || firstError.message || JSON.stringify(firstError);
+        } else if (error.response.data.error) {
+          errorMessage = `${error.response.data.error}: ${error.response.data.message || ''}`;
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
       setLoading(false);
     }
   };
@@ -151,7 +195,7 @@ export default function RegisterPage() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       className="input flex-1"
-                      placeholder="+996555123456"
+                      placeholder="0224209654 или +996224209654"
                       required
                     />
                   </div>
@@ -173,7 +217,7 @@ export default function RegisterPage() {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    {t('register.avatar')}
+                    {t('register.avatar')} *
                   </label>
                   <div className="flex items-center gap-4">
                     {formData.avatar && (
@@ -191,9 +235,13 @@ export default function RegisterPage() {
                         accept="image/*"
                         onChange={handleAvatarChange}
                         className="hidden"
+                        required
                       />
                     </label>
                   </div>
+                  {!formData.avatar && (
+                    <p className="text-sm text-red-600 mt-1">{t('register.avatarRequired')}</p>
+                  )}
                 </div>
 
                 <button onClick={handleNext} className="btn btn-primary w-full">
@@ -243,8 +291,8 @@ export default function RegisterPage() {
                   </button>
                   <button
                     onClick={handleSubmit}
-                    disabled={loading}
-                    className="btn btn-primary flex-1"
+                    disabled={loading || !formData.avatar}
+                    className="btn btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <Loader2 className="w-4 h-4 animate-spin mx-auto" />
@@ -252,6 +300,11 @@ export default function RegisterPage() {
                       t('register.title')
                     )}
                   </button>
+                  {!formData.avatar && (
+                    <p className="text-sm text-red-600 text-center mt-2">
+                      {t('register.avatarRequired')}
+                    </p>
+                  )}
                 </div>
               </div>
             )}

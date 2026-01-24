@@ -9,10 +9,11 @@ export const handleValidationErrors = (
 ) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map((err: any) => err.msg || err.message);
     return res.status(400).json({
       success: false,
       error: 'VALIDATION_ERROR',
-      message: 'Validation failed',
+      message: errorMessages[0] || 'Validation failed',
       errors: errors.array(),
     });
   }
@@ -37,16 +38,38 @@ export const validateRegister = [
     .trim()
     .notEmpty()
     .withMessage('Phone is required')
-    .matches(/^\+?[1-9]\d{1,14}$/)
-    .withMessage('Invalid phone format'),
+    .custom((value) => {
+      // Разрешаем форматы: +996..., 996..., 0..., или просто цифры
+      const phoneRegex = /^(\+?[0-9]{1,3})?[0-9]{6,14}$/;
+      if (!phoneRegex.test(value)) {
+        throw new Error('Invalid phone format');
+      }
+      return true;
+    }),
   body('phoneCountry')
     .isIn(['KG', 'RU'])
     .withMessage('Phone country must be KG or RU'),
+  body('avatar')
+    .notEmpty()
+    .withMessage('Avatar photo is required')
+    .custom((value) => {
+      if (!value || !value.startsWith('data:image')) {
+        throw new Error('Avatar must be a valid image file');
+      }
+      return true;
+    }),
   body('telegram')
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
-    .matches(/^@?[a-zA-Z0-9_]{5,32}$/)
-    .withMessage('Invalid Telegram username'),
+    .custom((value) => {
+      if (!value || value === '' || value === null || value === undefined) {
+        return true; // Пустое значение допустимо
+      }
+      if (!/^@?[a-zA-Z0-9_]{5,32}$/.test(value)) {
+        throw new Error('Invalid Telegram username');
+      }
+      return true;
+    }),
   body('status').isIn(['open', 'closed']).withMessage('Status must be open or closed'),
   body('language')
     .isIn(['ru', 'ky', 'en'])
@@ -79,10 +102,17 @@ export const validateUpdateProfile = [
     .isIn(['KG', 'RU'])
     .withMessage('Phone country must be KG or RU'),
   body('telegram')
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
-    .matches(/^@?[a-zA-Z0-9_]{5,32}$/)
-    .withMessage('Invalid Telegram username'),
+    .custom((value) => {
+      if (!value || value === '' || value === null || value === undefined) {
+        return true; // Пустое значение допустимо
+      }
+      if (!/^@?[a-zA-Z0-9_]{5,32}$/.test(value)) {
+        throw new Error('Invalid Telegram username');
+      }
+      return true;
+    }),
   body('status')
     .optional()
     .isIn(['open', 'closed'])

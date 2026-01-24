@@ -73,8 +73,8 @@ npm run dev
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:3001/api/v1
 - Admin Panel: http://localhost:3000/admin
-  - Username: `admin`
-  - Password: `admin123` (default, change in production)
+  - Username: `hayrulloh1706@gmail.com`
+  - Password: `20050617in`
 
 ## Generate QR Codes
 

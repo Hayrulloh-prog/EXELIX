@@ -31,8 +31,18 @@ export const verifyToken = (token: string): JWTPayload => {
 
 export const verifyAdminToken = (token: string): JWTPayload => {
   try {
-    return jwt.verify(token, ADMIN_JWT_SECRET) as JWTPayload;
-  } catch (error) {
+    const decoded = jwt.verify(token, ADMIN_JWT_SECRET) as JWTPayload;
+    if (!decoded || !decoded.userId) {
+      throw new Error('Invalid admin token');
+    }
+    return decoded;
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      throw new Error('Admin token expired');
+    }
+    if (error.name === 'JsonWebTokenError') {
+      throw new Error('Invalid admin token');
+    }
     throw new Error('Invalid admin token');
   }
 };

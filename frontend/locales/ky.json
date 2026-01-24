@@ -31,6 +31,7 @@
     "phoneCountry": "Өлкө",
     "telegram": "Telegram (милдеттүү эмес)",
     "avatar": "Профиль сүрөтү",
+    "avatarRequired": "Профиль сүрөтү милдеттүү",
     "status": "Статус",
     "statusOpen": "Ачык",
     "statusClosed": "Жабык",

@@ -9,7 +9,8 @@
     "start": "node dist/index.js",
     "migrate": "tsx src/migrations/run.ts",
     "migrate:create": "tsx src/migrations/create.ts",
-    "seed": "tsx src/seeds/run.ts"
+    "seed": "tsx src/seeds/run.ts",
+    "migrate:reset": "tsx src/migrations/reset.ts"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -24,6 +25,8 @@
     "multer": "^1.4.5-lts.1",
     "sharp": "^0.33.1",
     "web-push": "^3.6.7",
+    "bull": "^4.8.0",
+    "ioredis": "^5.3.2",
     "node-telegram-bot-api": "^0.64.0",
     "qrcode": "^1.5.3",
     "uuid": "^9.0.1",

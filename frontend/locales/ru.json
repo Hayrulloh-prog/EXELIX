@@ -31,6 +31,7 @@
     "phoneCountry": "Страна",
     "telegram": "Telegram (необязательно)",
     "avatar": "Фото профиля",
+    "avatarRequired": "Фото обязательно для регистрации",
     "status": "Статус",
     "statusOpen": "Открытый",
     "statusClosed": "Закрытый",

@@ -31,6 +31,7 @@
     "phoneCountry": "Country",
     "telegram": "Telegram (optional)",
     "avatar": "Profile Photo",
+    "avatarRequired": "Profile photo is required",
     "status": "Status",
     "statusOpen": "Open",
     "statusClosed": "Closed",

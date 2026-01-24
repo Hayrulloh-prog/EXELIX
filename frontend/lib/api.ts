@@ -1,9 +1,7 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
-// Для Next.js используем NEXT_PUBLIC_API_URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
-// Создаём экземпляр Axios для админки
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -12,27 +10,39 @@ const api = axios.create({
 });
 
 // Добавляем токен к каждому запросу
-api.interceptors.request.use((config: AxiosRequestConfig) => {
+api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
-    const adminToken = localStorage.getItem('adminToken'); // берём adminToken
-    if (adminToken) {
+    // Проверяем, это админский запрос или обычный пользовательский
+    const isAdminRoute = config.url?.includes('/admin/');
+    const tokenKey = isAdminRoute ? 'adminToken' : 'token';
+    const token = localStorage.getItem(tokenKey);
+
+    if (token) {
       config.headers = {
         ...config.headers,
-        Authorization: `Bearer ${adminToken}`,
+        Authorization: `Bearer ${token}`,
       };
     }
   }
   return config;
 });
 
-// Обработка ошибок
+// Обработка ошибок 401
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('adminToken'); // удаляем токен
-        window.location.href = '/admin/login'; // редирект на страницу логина админа
+        const isAdminRoute = error.config?.url?.includes('/admin/');
+        if (isAdminRoute) {
+          localStorage.removeItem('adminToken');
+          if (window.location.pathname !== '/admin') {
+            window.location.href = '/admin';
+          }
+        } else {
+          localStorage.removeItem('token');
+          window.location.href = '/';
+        }
       }
     }
     return Promise.reject(error);

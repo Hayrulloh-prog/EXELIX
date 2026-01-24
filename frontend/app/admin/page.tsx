@@ -56,10 +56,16 @@ export default function AdminPage() {
 
     try {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      await fetchStats();
-      setAuthenticated(true);
-    } catch (error) {
+      const response = await api.get('/admin/stats');
+      if (response.data) {
+        setStats(response.data);
+        setAuthenticated(true);
+        await fetchUsers();
+      }
+    } catch (error: any) {
+      console.error('Auth check failed:', error);
       localStorage.removeItem('adminToken');
+      setAuthenticated(false);
     } finally {
       setLoading(false);
     }
@@ -70,13 +76,20 @@ export default function AdminPage() {
     setLoginLoading(true);
     try {
       const response = await api.post('/admin/login', loginData);
-      localStorage.setItem('adminToken', response.data.token);
-      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-      setAuthenticated(true);
-      await fetchStats();
-      await fetchUsers();
+      if (response.data.success && response.data.token) {
+        localStorage.setItem('adminToken', response.data.token);
+        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        setAuthenticated(true);
+        await fetchStats();
+        await fetchUsers();
+        toast.success('Успешный вход');
+      } else {
+        toast.error('Неверные учетные данные');
+      }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      const errorMessage = error.response?.data?.message || error.message || 'Ошибка входа';
+      toast.error(errorMessage);
+      console.error('Login error:', error);
     } finally {
       setLoginLoading(false);
     }
@@ -151,25 +164,27 @@ export default function AdminPage() {
                 <label className="block text-sm font-medium mb-2">
                   {t('admin.username')}
                 </label>
-                <input
-                  type="email"
-                  value={loginData.username}
-                  onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
-                  className="input"
-                  required
-                />
+                 <input
+                   type="text"
+                   value={loginData.username}
+                   onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
+                   className="input"
+                   required
+                   autoComplete="username"
+                 />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
                   {t('admin.password')}
                 </label>
-                <input
-                  type="password"
-                  value={loginData.password}
-                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                  className="input"
-                  required
-                />
+                 <input
+                   type="password"
+                   value={loginData.password}
+                   onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                   className="input"
+                   required
+                   autoComplete="current-password"
+                 />
               </div>
               <button
                 type="submit"

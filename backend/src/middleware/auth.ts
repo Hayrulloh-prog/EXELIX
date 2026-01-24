@@ -41,21 +41,30 @@ export const authenticateAdmin = (
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw createError(401, 'UNAUTHORIZED', 'Authentication required');
+      return res.status(401).json({
+        success: false,
+        error: 'UNAUTHORIZED',
+        message: 'Authentication required',
+      });
     }
 
     const token = authHeader.substring(7);
-    const payload = verifyAdminToken(token);
-    req.user = { ...payload, type: 'admin' };
-    next();
-  } catch (error: any) {
-    if (error instanceof Error && error.message === 'Invalid admin token') {
+    try {
+      const payload = verifyAdminToken(token);
+      req.user = { ...payload, type: 'admin' };
+      next();
+    } catch (tokenError: any) {
       return res.status(401).json({
         success: false,
         error: 'INVALID_TOKEN',
         message: 'Invalid or expired admin token',
       });
     }
-    next(error);
+  } catch (error: any) {
+    return res.status(401).json({
+      success: false,
+      error: 'UNAUTHORIZED',
+      message: 'Authentication failed',
+    });
   }
 };

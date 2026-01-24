@@ -1,12 +1,15 @@
 import { Router } from 'express';
-import { getStats, getUsers, generateQR } from '../controllers/adminController';
 import { authenticateAdmin } from '../middleware/auth';
 import { validateGenerateQR } from '../utils/validation';
+import { loginAdmin, getStats, getUsers, generateQR } from '../controllers/adminController';
 
 const router = Router();
 
-router.use(authenticateAdmin);
+// Публичный маршрут для логина
+router.post('/login', loginAdmin);
 
+// Защищённые маршруты (требуется авторизация)
+router.use(authenticateAdmin);
 router.get('/stats', getStats);
 router.get('/users', getUsers);
 router.post('/qr/generate', validateGenerateQR, generateQR);
