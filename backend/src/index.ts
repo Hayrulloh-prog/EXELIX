@@ -8,15 +8,15 @@ const PORT = parseInt(process.env.PORT || "8080"); // ← ИСПРАВЛЕНО
 validateEnv();
 
 // Test database connection
-pool
-  .query("SELECT NOW()")
-  .then(() => {
-    console.log("✅ Database connected");
-  })
-  .catch((err: any) => {
-    console.error("❌ Database connection error:", err);
-    process.exit(1);
-  });
+// pool
+//   .query("SELECT NOW()")
+//   .then(() => {
+//     console.log("✅ Database connected");
+//   })
+//   .catch((err: any) => {
+//     console.error("❌ Database connection error:", err);
+//     process.exit(1);
+//   });
 
 // ВАЖНО: Fly.io требует слушать на 0.0.0.0, а не localhost!
 app.listen(PORT, "0.0.0.0", () => {
