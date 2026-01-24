@@ -1,11 +1,10 @@
 const requiredEnv = [
-  "DATABASE_URL", // ← ЗАМЕНИЛ DB_ переменные
+  "DATABASE_URL",
   "JWT_SECRET",
   "ADMIN_JWT_SECRET",
-  "SUPABASE_URL", // ← ДОБАВИЛ
-  "SUPABASE_SERVICE_ROLE_KEY", // ← ДОБАВИЛ
-  "REDIS_URL", // ← ДОБАВИЛ (опционально, можно убрать если не используется)
-  // VAPID keys and Telegram are optional for local, but warn if missing in production
+  "SUPABASE_URL",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "REDIS_URL",
 ];
 
 export function validateEnv() {
