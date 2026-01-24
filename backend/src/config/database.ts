@@ -1,14 +1,24 @@
-import { Pool, PoolConfig } from "pg";
+import { Pool } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const config: PoolConfig = {
-  host: process.env.DB_HOST || "localhost",
-  port: parseInt(process.env.DB_PORT || "5432"),
-  database: process.env.DB_NAME || "exelix",
-  user: process.env.DB_USER || "user",
-  password: process.env.DB_PASSWORD || "password",
+// ВАЖНО: используем ТОЛЬКО DATABASE_URL
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.error("❌ DATABASE_URL is required!");
+  process.exit(1);
+}
+
+console.log("Connecting to DB with DATABASE_URL");
+console.log("Host:", new URL(connectionString).hostname);
+
+const config = {
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
@@ -26,12 +36,10 @@ export const query = async (text: string, params?: any[]) => {
   try {
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
-    console.log("Executed query", { text, duration, rows: res.rowCount });
+    console.log("✅ Executed query", { text, duration, rows: res.rowCount });
     return res;
   } catch (error) {
-    console.error("Query error", { text, error });
+    console.error("❌ Query error", { text, error });
     throw error;
   }
 };
-
-console.log("Connecting to DB:", config);
