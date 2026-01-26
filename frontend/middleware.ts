@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
-  // Service worker registration
+export function middleware(request: NextRequest) {
+  // Allow service worker file to be served without interruption
   if (request.nextUrl.pathname === "/sw.js") {
     return NextResponse.next();
   }

@@ -1,21 +1,23 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
-import { Header } from '@/components/Header';
-import api from '@/lib/api';
-import toast from 'react-hot-toast';
-import { Loader2, Send } from 'lucide-react';
-import { motion } from 'framer-motion';
+export const dynamic = "force-dynamic";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import { Header } from "@/components/Header";
+import api from "@/lib/api";
+import toast from "react-hot-toast";
+import { Loader2, Send } from "lucide-react";
+import { motion } from "framer-motion";
 
 const notificationTypes = [
-  { id: 'blocking', icon: '🚧', label: 'notifications.blocking' },
-  { id: 'parking', icon: '🅿️', label: 'notifications.parking' },
-  { id: 'alarm', icon: '🚨', label: 'notifications.alarm' },
-  { id: 'evacuation', icon: '🚓', label: 'notifications.evacuation' },
-  { id: 'minorAccident', icon: '🚗', label: 'notifications.minorAccident' },
-  { id: 'majorAccident', icon: '🚑', label: 'notifications.majorAccident' },
+  { id: "blocking", icon: "🚧", label: "notifications.blocking" },
+  { id: "parking", icon: "🅿️", label: "notifications.parking" },
+  { id: "alarm", icon: "🚨", label: "notifications.alarm" },
+  { id: "evacuation", icon: "🚓", label: "notifications.evacuation" },
+  { id: "minorAccident", icon: "🚗", label: "notifications.minorAccident" },
+  { id: "majorAccident", icon: "🚑", label: "notifications.majorAccident" },
 ];
 
 export default function NotifyTokenPage() {
@@ -31,7 +33,7 @@ export default function NotifyTokenPage() {
   useEffect(() => {
     const token = params.token as string;
     if (!token) {
-      router.push('/');
+      router.push("/");
       return;
     }
     setQrToken(token);
@@ -40,12 +42,12 @@ export default function NotifyTokenPage() {
 
   const validateAndLoad = async (token: string) => {
     try {
-      const response = await api.post('/qr/validate', { token });
+      const response = await api.post("/qr/validate", { token });
       const data = response.data;
 
       if (!data.valid) {
-        toast.error('Invalid QR code');
-        router.push('/');
+        toast.error("Invalid QR code");
+        router.push("/");
         return;
       }
 
@@ -54,7 +56,7 @@ export default function NotifyTokenPage() {
         try {
           const userResponse = await api.get(`/users/${data.userId}`);
           const userData = userResponse.data;
-          if (userData.status === 'open') {
+          if (userData.status === "open") {
             setUser(userData);
           }
         } catch (err) {
@@ -62,8 +64,8 @@ export default function NotifyTokenPage() {
         }
       }
     } catch (error) {
-      toast.error('Error validating QR code');
-      router.push('/');
+      toast.error("Error validating QR code");
+      router.push("/");
     } finally {
       setValidating(false);
     }
@@ -73,37 +75,39 @@ export default function NotifyTokenPage() {
     setSelectedTypes((prev) =>
       prev.includes(typeId)
         ? prev.filter((id) => id !== typeId)
-        : [...prev, typeId]
+        : [...prev, typeId],
     );
   };
 
   const handleSubmit = async () => {
     if (selectedTypes.length === 0) {
-      toast.error('Please select at least one notification type');
+      toast.error("Please select at least one notification type");
       return;
     }
 
     if (!qrToken) {
-      toast.error('Invalid QR code');
+      toast.error("Invalid QR code");
       return;
     }
 
     setLoading(true);
     try {
-      await api.post('/notifications/send', {
+      await api.post("/notifications/send", {
         qrToken,
         types: selectedTypes,
       });
-      toast.success(t('notifications.success'));
+      toast.success(t("notifications.success"));
       setSelectedTypes([]);
     } catch (error: any) {
       const errorCode = error.response?.data?.error;
-      if (errorCode === 'RATE_LIMIT_EXCEEDED') {
-        toast.error(t('notifications.rateLimit'));
-      } else if (errorCode === 'OWNER_LIMIT_EXCEEDED') {
-        toast.error(t('notifications.ownerLimit'));
+      if (errorCode === "RATE_LIMIT_EXCEEDED") {
+        toast.error(t("notifications.rateLimit"));
+      } else if (errorCode === "OWNER_LIMIT_EXCEEDED") {
+        toast.error(t("notifications.ownerLimit"));
       } else {
-        toast.error(error.response?.data?.message || 'Failed to send notification');
+        toast.error(
+          error.response?.data?.message || "Failed to send notification",
+        );
       }
     } finally {
       setLoading(false);
@@ -134,7 +138,8 @@ export default function NotifyTokenPage() {
                   />
                 ) : (
                   <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center text-xl font-bold text-primary-600">
-                    {user.firstName[0]}{user.lastName[0]}
+                    {user.firstName[0]}
+                    {user.lastName[0]}
                   </div>
                 )}
                 <div>
@@ -148,8 +153,12 @@ export default function NotifyTokenPage() {
           )}
 
           <div className="card">
-            <h1 className="text-3xl font-bold mb-6">{t('notifications.title')}</h1>
-            <p className="text-gray-600 mb-8">{t('notifications.selectTypes')}</p>
+            <h1 className="text-3xl font-bold mb-6">
+              {t("notifications.title")}
+            </h1>
+            <p className="text-gray-600 mb-8">
+              {t("notifications.selectTypes")}
+            </p>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
               {notificationTypes.map((type) => (
@@ -160,8 +169,8 @@ export default function NotifyTokenPage() {
                   onClick={() => toggleType(type.id)}
                   className={`card text-center cursor-pointer transition-all ${
                     selectedTypes.includes(type.id)
-                      ? 'border-primary-600 bg-primary-50'
-                      : 'hover:border-gray-300'
+                      ? "border-primary-600 bg-primary-50"
+                      : "hover:border-gray-300"
                   }`}
                 >
                   <div className="text-4xl mb-2">{type.icon}</div>
@@ -180,7 +189,7 @@ export default function NotifyTokenPage() {
               ) : (
                 <>
                   <Send className="w-4 h-4" />
-                  {t('notifications.send')}
+                  {t("notifications.send")}
                 </>
               )}
             </button>
