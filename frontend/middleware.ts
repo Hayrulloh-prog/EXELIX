@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
-  // Register service worker
-  if (request.nextUrl.pathname === '/sw.js') {
+export function proxy(request: NextRequest) {
+  // Service worker registration
+  if (request.nextUrl.pathname === "/sw.js") {
     return NextResponse.next();
   }
 
@@ -11,5 +11,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/sw.js'],
+  matcher: ["/sw.js"],
 };
