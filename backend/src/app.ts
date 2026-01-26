@@ -79,6 +79,26 @@ app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/push", pushRoutes);
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Exelix3 API is running",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: "/api/v1/health",
+      auth: "/api/v1/auth",
+      users: "/api/v1/users",
+      qr: "/api/v1/qr",
+      notifications: "/api/v1/notifications",
+      admin: "/api/v1/admin",
+      push: "/api/v1/push",
+    },
+    documentation: "https://github.com/your-username/exelix3",
+    status: "operational",
+  });
+});
+
 // --------------------
 // Error handler
 // --------------------
