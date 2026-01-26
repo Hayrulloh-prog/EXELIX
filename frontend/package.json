@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
     "axios": "^1.6.2",
     "clsx": "^2.0.0",
+    "exelix": "file:..",
     "framer-motion": "^10.16.16",
     "i18next": "^23.7.16",
     "lucide-react": "^0.303.0",
