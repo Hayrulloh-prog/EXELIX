@@ -11,12 +11,15 @@ async function run() {
       "migrations",
       "001_initial_schema.sql",
     );
-    const sql = await readFile(sqlPath, "utf8");
+
     console.log("Running migrations from", sqlPath);
+
+    const sql = await readFile(sqlPath, "utf8");
     await pool.query(sql);
+
     console.log("✅ Migrations applied");
     process.exit(0);
-  } catch (err: any) {
+  } catch (err) {
     console.error("❌ Migration error", err);
     process.exit(1);
   }

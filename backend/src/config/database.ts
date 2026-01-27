@@ -14,11 +14,20 @@ if (!connectionString) {
 console.log("Connecting to DB with DATABASE_URL");
 console.log("Host:", new URL(connectionString).hostname);
 
+const dbHost = new URL(connectionString).hostname;
+const isLocalDb =
+  dbHost === "localhost" || dbHost === "127.0.0.1" || dbHost === "::1";
+
 const config = {
   connectionString,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  // Локальный Postgres часто без SSL — не форсим его на localhost
+  ...(isLocalDb
+    ? {}
+    : {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }),
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
