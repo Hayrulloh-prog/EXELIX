@@ -1,63 +1,45 @@
--- Initial schema for EXELIX
+// backend/src/migrations/run.ts
+import path from "path";
+import fs from "fs";
+import { query } from "../../config/database";
+import { fileURLToPath } from "url";
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
--- Users
-CREATE TABLE IF NOT EXISTS users (
-  id UUID PRIMARY KEY,
-  qr_token TEXT,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  phone_country VARCHAR(4) NOT NULL,
-  telegram TEXT,
-  telegram_chat_id TEXT,
-  avatar_url TEXT,
-  push_subscription TEXT,
-  status VARCHAR(16) NOT NULL DEFAULT 'closed',
-  language VARCHAR(8) NOT NULL DEFAULT 'ru',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+async function run() {
+  console.log("🚀 Starting database migrations...");
 
-CREATE INDEX IF NOT EXISTS idx_users_phone ON users (phone, phone_country);
-CREATE INDEX IF NOT EXISTS idx_users_qr_token ON users (qr_token);
+  // ИСПРАВЛЕННЫЙ ПУТЬ: указываем на существующий файл миграции
+  const migrationPath = path.join(
+    __dirname,
+    "..", // поднимаемся на уровень выше
+    "..", // ещё на уровень выше
+    "migrations", // папка миграций
+    "001_initial_schema.sql" // файл миграции
+  );
 
--- QR codes
-CREATE TABLE IF NOT EXISTS qr_codes (
-  id UUID PRIMARY KEY,
-  token TEXT UNIQUE NOT NULL,
-  is_used BOOLEAN DEFAULT FALSE,
-  used_by_id UUID,
-  used_at TIMESTAMP WITH TIME ZONE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+  console.log("📁 Migration path:", migrationPath);
 
--- Notifications
-CREATE TABLE IF NOT EXISTS notifications (
-  id UUID PRIMARY KEY,
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  sender_ip TEXT,
-  notification_type TEXT,
-  message TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+  try {
+    // Проверяем, существует ли файл
+    if (!fs.existsSync(migrationPath)) {
+      throw new Error(`Migration file not found: ${migrationPath}`);
+    }
 
--- Rate limits
-CREATE TABLE IF NOT EXISTS rate_limits (
-  id UUID PRIMARY KEY,
-  user_id UUID,
-  ip_address TEXT,
-  type VARCHAR(16),
-  count INTEGER DEFAULT 0,
-  reset_at TIMESTAMP WITH TIME ZONE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+    // Читаем содержимое файла
+    const sql = fs.readFileSync(migrationPath, "utf8");
+    console.log("📄 Migration SQL content length:", sql.length);
 
--- Admins
-CREATE TABLE IF NOT EXISTS admins (
-  id UUID PRIMARY KEY,
-  username TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL,
-  last_login TIMESTAMP WITH TIME ZONE
-);
+    // Выполняем миграцию
+    await query(sql);
+    console.log("✅ Migration completed successfully!");
+
+  } catch (error: any) {
+    console.error("❌ Migration failed:", error.message);
+    console.error("Full error:", error);
+    process.exit(1);
+  }
+}
+
+run();

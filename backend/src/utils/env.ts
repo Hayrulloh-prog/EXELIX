@@ -1,4 +1,4 @@
-const requiredEnv = [
+const requiredProdEnv = [
   "DATABASE_URL",
   "JWT_SECRET",
   "ADMIN_JWT_SECRET",
@@ -7,7 +7,12 @@ const requiredEnv = [
   "REDIS_URL",
 ];
 
+const requiredDevEnv = ["DATABASE_URL", "JWT_SECRET", "ADMIN_JWT_SECRET"];
+
 export function validateEnv() {
+  const isProd = process.env.NODE_ENV === "production";
+  const requiredEnv = isProd ? requiredProdEnv : requiredDevEnv;
+
   const missing: string[] = [];
   for (const key of requiredEnv) {
     if (!process.env[key]) missing.push(key);
