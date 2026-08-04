@@ -2,8 +2,6 @@ const requiredProdEnv = [
   "DATABASE_URL",
   "JWT_SECRET",
   "ADMIN_JWT_SECRET",
-  "SUPABASE_URL",
-  "SUPABASE_SERVICE_ROLE_KEY",
   "REDIS_URL",
 ];
 
@@ -34,11 +32,6 @@ export function validateEnv() {
     if (!process.env.VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
       console.error(
         "VAPID keys are not configured. Push notifications will not work. Set VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY.",
-      );
-    }
-    if (!process.env.TELEGRAM_BOT_TOKEN) {
-      console.error(
-        "TELEGRAM_BOT_TOKEN is not configured. Telegram notifications will not work.",
       );
     }
   }

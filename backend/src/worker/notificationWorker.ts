@@ -1,17 +1,21 @@
 import { notificationQueue } from "../queues/notificationQueue";
 import { sendPushNotification } from "../services/pushService";
-import { sendTelegramNotification } from "../services/telegramService";
 import { query } from "../config/database";
 
-notificationQueue.process(async (job) => {
-  const { userId, pushSubscription, telegram, message } = job.data;
+if (notificationQueue) {
+  notificationQueue.process(async (job: any) => {
+  const { userId, pushSubscription, message } = job.data;
 
   // Push
   if (pushSubscription) {
     try {
       const res: any = await sendPushNotification(
-        JSON.parse(pushSubscription),
-        message,
+        userId,
+        {
+          title: 'EXELIX Уведомление',
+          body: message,
+          icon: '/icon-192.png'
+        }
       );
       if (res === "EXPIRED") {
         // Remove subscription from DB
@@ -24,16 +28,8 @@ notificationQueue.process(async (job) => {
     }
   }
 
-  // Telegram
-  if (telegram) {
-    try {
-      await sendTelegramNotification(telegram, message);
-    } catch (err) {
-      console.error("Worker telegram send error", err);
-    }
-  }
-
   return Promise.resolve();
 });
+}
 
 console.log("Notification worker started");

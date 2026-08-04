@@ -4,5 +4,5 @@ COPY package*.json ./
 RUN npm install --production
 COPY . .
 RUN npm run build || true
-EXPOSE 8080
+EXPOSE 3002
 CMD ["node", "dist/index.js"]

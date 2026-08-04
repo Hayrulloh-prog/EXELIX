@@ -7,21 +7,18 @@ import path from "path";
 
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
+import avatarRoutes from "./routes/avatar";
 import qrRoutes from "./routes/qr";
 import notificationRoutes from "./routes/notifications";
 import adminRoutes from "./routes/admin";
 import pushRoutes from "./routes/push";
 import { errorHandler } from "./utils/errors";
+import { scheduleCleanup } from "./services/cleanupService";
+import { apiRateLimit } from "./middleware/rateLimit";
 
 dotenv.config();
 
 const app = express();
-
-// Simple request logger to help debugging routes
-app.use((req, res, next) => {
-  console.log(`[REQ] ${req.method} ${req.originalUrl}`);
-  next();
-});
 
 // --------------------
 // Security middleware
@@ -29,23 +26,55 @@ app.use((req, res, next) => {
 app.use(helmet());
 
 // --------------------
+// Rate limiting
+// --------------------
+app.use('/api/', apiRateLimit);
+
+// --------------------
 // CORS setup
 // --------------------
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:3001",
+  "http://192.168.0.46:3000",
+  "http://192.168.0.46:3001",
+  "http://172.26.128.1:3000",
+  "http://172.26.128.1:3001",
+  "http://192.168.236.247:3000", // Добавлен текущий IP
+  "http://192.168.236.247:3001", // Добавлен текущий IP
   process.env.CORS_ORIGIN,
 ].filter(Boolean);
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+      // Allow requests without origin (mobile apps, curl, etc.)
+      if (!origin) {
+        return callback(null, true);
       }
+
+      // Allow all localhost variants
+      if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+        return callback(null, true);
+      }
+
+      // Allow specific network IPs
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // For development, allow all origins
+      if (process.env.NODE_ENV === 'development') {
+        return callback(null, true);
+      }
+
+      callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   }),
 );
 
@@ -53,8 +82,10 @@ app.use(
 // Body parsing
 // --------------------
 app.use(compression());
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: true, limit: "2mb" }));
+
+
 
 // --------------------
 // Serve uploads
@@ -74,6 +105,7 @@ app.get("/api/v1/health", (req, res) => {
 // --------------------
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/users", avatarRoutes);
 app.use("/api/v1/qr", qrRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/admin", adminRoutes);
@@ -116,3 +148,6 @@ app.use((req, res) => {
 });
 
 export default app;
+
+// Запуск планировщика очистки при старте приложения
+scheduleCleanup();

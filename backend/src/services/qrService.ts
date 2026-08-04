@@ -20,7 +20,7 @@ export const createQRCode = async (): Promise<string> => {
   const id = uuidv4();
 
   await query(
-    `INSERT INTO qr_codes (id, token, is_used, created_at)
+    `INSERT INTO qr_codes (id, token, is_used, generated_at)
      VALUES ($1, $2, $3, NOW())`,
     [id, token, false]
   );
@@ -31,7 +31,6 @@ export const createQRCode = async (): Promise<string> => {
 export const generateQRCodes = async (count: number): Promise<string[]> => {
   const tokens: string[] = [];
   const values: any[] = [];
-  let paramIndex = 1;
 
   for (let i = 0; i < count; i++) {
     const id = uuidv4();
@@ -60,7 +59,7 @@ export const validateQRToken = async (
   token: string
 ): Promise<{ valid: boolean; used: boolean; userId?: string }> => {
   const result = await query(
-    `SELECT id, is_used, used_by_id FROM qr_codes WHERE token = $1`,
+    `SELECT id, is_used, used_by_user_id FROM qr_codes WHERE token = $1`,
     [token]
   );
 
@@ -69,10 +68,11 @@ export const validateQRToken = async (
   }
 
   const qr = result.rows[0];
+
   return {
     valid: true,
     used: qr.is_used,
-    userId: qr.used_by_id || undefined,
+    userId: qr.used_by_user_id || undefined,
   };
 };
 
@@ -82,22 +82,33 @@ export const markQRAsUsed = async (
 ): Promise<void> => {
   await query(
     `UPDATE qr_codes
-     SET is_used = TRUE, used_by_id = $1, used_at = NOW()
+     SET is_used = TRUE, used_by_user_id = $1, used_at = NOW()
      WHERE token = $2 AND is_used = FALSE`,
     [userId, token]
   );
 };
 
-export const getUserByQRToken = async (token: string) => {
+export const getUserByQRToken = async (qrToken: string, language: string = 'ru'): Promise<any> => {
+  // Normalize token - remove leading slash if present
+  const normalizedToken = qrToken.startsWith('/') ? qrToken.slice(1) : qrToken;
+
   const result = await query(
-    `SELECT u.* FROM users u
-     INNER JOIN qr_codes qr ON u.qr_token = qr.token
-     WHERE qr.token = $1 AND qr.is_used = TRUE`,
-    [token]
+    `SELECT id, first_name, last_name, phone, status, language, avatar_url, telegram_username FROM users WHERE qr_token = $1`,
+    [normalizedToken]
   );
 
   if (result.rows.length === 0) {
-    throw createError(404, 'NOT_FOUND', 'User not found for this QR code');
+    const messages: Record<string, string> = {
+      ru: 'Пользователь не найден для этого QR-кода',
+      ky: 'Бул QR-код үчүн колдонуучу табылган жок',
+      en: 'User not found for this QR code'
+    };
+
+    throw createError(
+      404,
+      'USER_NOT_FOUND',
+      messages[language] || messages.ru
+    );
   }
 
   return result.rows[0];

@@ -1,12 +1,13 @@
 import { Router } from 'express';
-import { register, login, adminLogin } from '../controllers/authController';
-import { validateRegister, validateAdminLogin } from '../utils/validation';
+import { login, adminLogin, googleLogin, googleCallback } from '../controllers/authController';
+import { validateAdminLogin } from '../utils/validation';
 import { authRateLimit } from '../middleware/rateLimit';
 
 const router = Router();
 
-router.post('/register', authRateLimit, validateRegister, register);
 router.post('/login', authRateLimit, login);
+router.get('/google', googleLogin);
+router.get('/google/callback', googleCallback);
 // Admin login moved to /api/v1/admin/login
 
 export default router;

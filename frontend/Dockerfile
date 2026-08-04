@@ -1,13 +1,21 @@
-FROM node:20-alpine AS builder
+FROM node:20-alpine
+
 WORKDIR /app
+
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
+
+# Copy source code
 COPY . .
+
+# Build the application
 RUN npm run build
 
-FROM node:20-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-COPY --from=builder /app/ .
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+# Expose port
+EXPOSE 3001
+
+# Serve the application
+CMD ["npm", "run", "preview"]

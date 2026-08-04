@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: exelix-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: EXELIX
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 20050617in
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - exelix-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: exelix-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - exelix-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: exelix-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      DATABASE_URL: postgresql://postgres:20050617in@postgres:5432/EXELIX
+      REDIS_URL: redis://redis:6379
+      API_BASE_URL: https://exelix.ru
+      CORS_ORIGIN: https://exelix.ru
+      JWT_SECRET: a20e4ef2a63fcaa0a39b7a980b2d2c4ffce139b7607c9c127f6b207ba197923afbce94b648494c2d32380a484a9b250ec5801392db95d651f320454720fed656
+      ADMIN_JWT_SECRET: fc250759726fe7b0f90c5f50cbb173853075f2375149c311f6c32626534f936d
+      ADMIN_LOGIN: exelix.service@gmail.com
+      ADMIN_PASSWORD: 20050617Exelix!
+      TELEGRAM_BOT_TOKEN: 8299001344:AAFAhJLRAbsSBIx0_BOqckY8S-06Vxtm_OE
+      VAPID_PUBLIC_KEY: "BMtQbKRgvzh3MuF3V1TJAPJ79kJp279W4_Dn1fCoelpAF4rEIJXYGNBC9e0j4r9nLJzWitplpuboFe3Vj2BwL9g"
+      VAPID_PRIVATE_KEY: "dN4Ir-XI_DXgfxrOva6eFLsUDNFJKkzzQjDSmAo12nE"
+      VAPID_EMAIL: "exelix.service@gmail.com"
+    ports:
+      - "3002:3002"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - exelix-network
+    volumes:
+      - ./backend/uploads:/app/uploads
+
+  # Frontend (Vite React)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: exelix-frontend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      VITE_API_URL: https://exelix.ru
+    depends_on:
+      - backend
+    networks:
+      - exelix-network
+
+  # Nginx Reverse Proxy (Production)
+  nginx:
+    image: nginx:alpine
+    container_name: exelix-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - exelix-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  exelix-network:
+    driver: bridge
