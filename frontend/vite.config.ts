@@ -80,5 +80,6 @@ export default defineConfig({
   preview: {
     port: 3001,
     host: true,
+    allowedHosts: ["exelix.ru", "www.exelix.ru"],
   },
 });

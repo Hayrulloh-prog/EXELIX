@@ -275,6 +275,9 @@ export function AdminPage() {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
+        
+        // Refresh statistics to reflect the newly generated QR codes
+        await loadStats();
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || t('admin.qrError'));

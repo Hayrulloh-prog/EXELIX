@@ -13,7 +13,7 @@ if (!connectionString) {
 
 const host = new URL(connectionString).hostname;
 const isLocal =
-  host === "localhost" || host === "127.0.0.1" || host === "::1";
+  host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "postgres";
 
 const isProduction = process.env.NODE_ENV === "production";
 
