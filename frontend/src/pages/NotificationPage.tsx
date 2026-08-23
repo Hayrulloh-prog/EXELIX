@@ -302,12 +302,9 @@ export default function NotificationPage() {
       const response = await fetch(`/api/v1/notifications/check-read-status?token=${token}`);
       const data = await response.json();
 
-      // Если запрос успешен, нет непрочитанных и мы отправляли сообщения в этой сессии
+      // Если у владельца нет непрочитанных — показываем зелёный блок
       if (data.success && !data.hasUnreadNotifications) {
-        const count = parseInt(localStorage.getItem(`sent_count_${token}`) || "0", 10);
-        if (count > 0) {
-          setOwnerMarkedAsRead(true);
-        }
+        setOwnerMarkedAsRead(true);
       }
     } catch (err) {
     }
@@ -422,7 +419,7 @@ export default function NotificationPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen hero-gradient flex items-center justify-center">
+      <div className="flex-1 h-full w-full hero-gradient flex items-center justify-center">
         <main className="container mx-auto px-4 py-16">
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">

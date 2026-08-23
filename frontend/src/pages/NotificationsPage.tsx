@@ -204,7 +204,7 @@ export function NotificationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="flex-1 h-full w-full bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
           <p className="text-gray-600 dark:text-gray-400">{t('common.loading')}</p>
@@ -214,7 +214,7 @@ export function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex-1 h-full overflow-y-auto w-full bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <div className="fixed top-16 left-0 right-0 z-10 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-2 pb-1 pt-3">
