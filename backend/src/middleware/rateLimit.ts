@@ -33,7 +33,7 @@ export const authRateLimit = rateLimit({
 // Rate limiting для регистрации
 export const registrationRateLimit = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 час
-  max: 10, // 10 попыток регистрации за час
+  max: 30, // 30 попыток регистрации за час
   message: (req: any, res: any) => {
     // Определяем язык из заголовка или параметра
     const language = req.headers['accept-language'] || req.query.language || 'ru';
@@ -105,8 +105,8 @@ export const userRateLimit = rateLimit({
 
 // Rate limiting для QR кодов
 export const qrRateLimit = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 час
-  max: 100, // максимум 100 запросов QR кодов за час
+  windowMs: 15 * 60 * 1000, // 15 минут
+  max: 500, // максимум 500 запросов QR кодов за 15 минут (polling)
   message: (req: any, res: any) => {
     // Определяем язык из заголовка или параметра
     const language = req.headers['accept-language'] || req.query.language || 'ru';
