@@ -163,6 +163,12 @@ export default function NotificationPage() {
             }
           }
         }
+        
+        // Также проверяем статус прочтения, если мы отправляли сообщения
+        const count = parseInt(localStorage.getItem(`sent_count_${qrToken}`) || "0", 10);
+        if (count > 0 && !ownerMarkedAsRead) {
+          checkReadStatus(qrToken);
+        }
       } catch (err) {
       }
     };
@@ -296,10 +302,10 @@ export default function NotificationPage() {
       const response = await fetch(`/api/v1/notifications/check-read-status?token=${token}`);
       const data = await response.json();
 
+      // Если запрос успешен, нет непрочитанных и мы отправляли сообщения в этой сессии
       if (data.success && !data.hasUnreadNotifications) {
-        // Проверяем localStorage чтобы узнать нажимал ли владелец кнопку
-        const markedAsRead = localStorage.getItem(`owner_marked_read_${token}`);
-        if (markedAsRead === 'true') {
+        const count = parseInt(localStorage.getItem(`sent_count_${token}`) || "0", 10);
+        if (count > 0) {
           setOwnerMarkedAsRead(true);
         }
       }
