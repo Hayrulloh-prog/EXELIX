@@ -509,7 +509,7 @@ export default function NotificationPage() {
   }
 
   return (
-    <div className="min-h-screen hero-gradient flex items-center justify-center">
+    <div className="flex-1 h-full overflow-y-auto w-full hero-gradient py-4">
       <main className="container mx-auto px-3 py-3 sm:py-8 max-w-4xl">
         {/* User Info Card */}
         {userData?.status === "open" && (
