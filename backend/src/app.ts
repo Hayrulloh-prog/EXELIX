@@ -21,6 +21,11 @@ dotenv.config();
 const app = express();
 
 // --------------------
+// Trust proxy (Nginx) - required for express-rate-limit behind reverse proxy
+// --------------------
+app.set('trust proxy', 1);
+
+// --------------------
 // Security middleware
 // --------------------
 app.use(helmet());
