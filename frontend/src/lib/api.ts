@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
 
   // Admin
   ADMIN_LOGIN: `${API_BASE_URL}/v1/admin/login`,
+  ADMIN_ME: `${API_BASE_URL}/v1/admin/me`,
   ADMIN_STATS: `${API_BASE_URL}/v1/admin/stats`,
   ADMIN_USERS: `${API_BASE_URL}/v1/admin/users`,
   GENERATE_QR: `${API_BASE_URL}/v1/admin/qr/generate`,

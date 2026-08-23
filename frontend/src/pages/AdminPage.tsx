@@ -99,7 +99,7 @@ export function AdminPage() {
         return;
       }
 
-      const response = await fetch(API_ENDPOINTS.ADMIN_STATS, {
+      const response = await fetch(API_ENDPOINTS.ADMIN_ME, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -108,6 +108,7 @@ export function AdminPage() {
       if (response.ok) {
         setAuthenticated(true);
       } else {
+        localStorage.removeItem('adminToken');
         setAuthenticated(false);
       }
     } catch (error) {
@@ -116,6 +117,7 @@ export function AdminPage() {
       setLoading(false);
     }
   };
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

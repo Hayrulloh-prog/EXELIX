@@ -12,6 +12,13 @@ import QRCode from "qrcode";
 import { randomBytes } from "crypto";
 
 // --------------------
+// Проверка токена (лёгкий эндпоинт для checkAuth)
+// --------------------
+export const getAdminMe = async (req: AuthRequest, res: Response) => {
+  res.json({ success: true, admin: { userId: req.user?.userId } });
+};
+
+// --------------------
 // Публичный метод: вход в админку
 // --------------------
 export const loginAdmin = async (req: AuthRequest, res: Response) => {
