@@ -9,7 +9,7 @@ export function HomePage() {
   const loginTo = isLoggedIn ? "/dashboard" : "/login";
 
   return (
-    <div className="min-h-screen hero-gradient">
+    <div className="flex-1 h-full overflow-y-auto w-full hero-gradient">
       <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* Hero Section */}
         <div className="max-w-7xl mx-auto text-center mb-16 sm:mb-20 lg:mb-24">

@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 import { Header } from './components/Header';
@@ -17,8 +17,7 @@ import i18n from './i18n'; // Import i18n configuration
 
 // PWA detection component
 function PWADetector({ children }: { children: React.ReactNode }) {
-  const [isStandalone, setIsStandalone] = useState(false);
-  const [userToken, setUserToken] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if running as standalone PWA
@@ -27,17 +26,15 @@ function PWADetector({ children }: { children: React.ReactNode }) {
       (window.navigator as any).standalone === true ||
       document.referrer.includes('android-app://')
     );
-    setIsStandalone(standalone);
 
     // Check if user has token
     const token = localStorage.getItem('userToken') || localStorage.getItem('token');
-    setUserToken(token);
-  }, []);
-
-  // If running as PWA and user has token, redirect to dashboard
-  if (isStandalone && userToken) {
-    return <Navigate to="/dashboard" replace />;
-  }
+    
+    // If running as PWA and user has token, and we are on root, redirect to dashboard
+    if (standalone && token && window.location.pathname === '/') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [navigate]);
 
   return <>{children}</>;
 }
