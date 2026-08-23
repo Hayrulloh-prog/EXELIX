@@ -138,7 +138,7 @@ export function QRScanPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen hero-gradient">
+      <div className="flex-1 hero-gradient flex items-center justify-center">
         <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
@@ -214,7 +214,7 @@ export function QRScanPage() {
 
     // Show user data instead of redirecting
     return (
-      <div className="min-h-screen hero-gradient">
+      <div className="flex-1 overflow-y-auto hero-gradient flex flex-col justify-center py-6">
         <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="w-full max-w-md">
@@ -244,7 +244,7 @@ export function QRScanPage() {
 
   if (!validation) {
     return (
-      <div className="min-h-screen hero-gradient">
+      <div className="flex-1 hero-gradient flex items-center justify-center">
         <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
@@ -308,7 +308,7 @@ export function QRScanPage() {
     if (!googleId) {
       // Step 1: Connect Google Account
       return (
-        <div className="h-[88vh] hero-gradient flex items-center justify-center">
+        <div className="flex-1 overflow-y-auto hero-gradient flex items-center justify-center py-6">
           <main className="container mx-auto px-4 sm:px-6">
             <div className="max-w-md mx-auto">
               <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 text-center px-4 py-6 sm:px-8 sm:py-10">
@@ -345,7 +345,7 @@ export function QRScanPage() {
 
     // Show registration form
     return (
-      <div className="hero-gradient">
+      <div className="flex-1 h-full overflow-y-auto w-full hero-gradient">
         <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8 sm:mb-10">
@@ -381,7 +381,7 @@ export function QRScanPage() {
 
   // Default fallback - should not reach here but just in case
   return (
-    <div className="min-h-screen hero-gradient">
+    <div className="flex-1 overflow-y-auto hero-gradient flex flex-col justify-center py-6">
       <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
