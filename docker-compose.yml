@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_DB: EXELIX
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-20050617in}
+      POSTGRES_PASSWORD: 20050617in
     ports:
       - "5432:5432"
     volumes:
@@ -41,21 +41,21 @@ services:
       NODE_ENV: production
       PORT: 3002
       DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:20050617in@postgres:5432/EXELIX}
-      REDIS_URL: redis://redis:6379
-      API_BASE_URL: https://exelix.ru
-      CORS_ORIGIN: https://exelix.ru
-      FRONTEND_URL: https://exelix.ru
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      API_BASE_URL: ${API_BASE_URL:-https://exelix.ru}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://exelix.ru}
+      FRONTEND_URL: ${FRONTEND_URL:-https://exelix.ru}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URI: https://exelix.ru/api/v1/auth/google/callback
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-https://exelix.ru/api/v1/auth/google/callback}
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
-      ADMIN_LOGIN: exelix.service@gmail.com
+      ADMIN_LOGIN: ${ADMIN_LOGIN:-exelix.service@gmail.com}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-20050617Exelix!}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
-      VAPID_PUBLIC_KEY: "BMtQbKRgvzh3MuF3V1TJAPJ79kJp279W4_Dn1fCoelpAF4rEIJXYGNBC9e0j4r9nLJzWitplpuboFe3Vj2BwL9g"
-      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
-      VAPID_EMAIL: "exelix.service@gmail.com"
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-BMtQbKRgvzh3MuF3V1TJAPJ79kJp279W4_Dn1fCoelpAF4rEIJXYGNBC9e0j4r9nLJzWitplpuboFe3Vj2BwL9g}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-dN4Ir-XI_DXgfxrOva6eFLsUDNFJKkzzQjDSmAo12nE}
+      VAPID_EMAIL: ${VAPID_EMAIL:-exelix.service@gmail.com}
     ports:
       - "3002:3002"
     depends_on:
