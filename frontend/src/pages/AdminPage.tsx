@@ -277,7 +277,7 @@ export function AdminPage() {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
-        
+
         // Refresh statistics to reflect the newly generated QR codes
         await loadStats();
       } else {
@@ -366,8 +366,8 @@ export function AdminPage() {
         <div className="w-full max-w-md">
             <div className="feature-card sm:py-4 px-4">
                 <div className="text-center mb-8">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-                    <Shield className="w-10 h-10 text-white" />
+                  <div className="w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                    <Shield className="w-6 h-6 sm:w-10 sm:h-10 text-white" />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                     {t('admin.title')}
@@ -566,7 +566,7 @@ export function AdminPage() {
                     placeholder={t('admin.search', 'Поиск...')}
                     value={inactiveSearchQuery}
                     onChange={(e) => setInactiveSearchQuery(e.target.value)}
-                    className="input pl-9 py-2 text-sm w-full"
+                    className="input pl-9 py-2 text-base w-full"
                   />
                 </div>
 
@@ -647,7 +647,7 @@ export function AdminPage() {
                 placeholder={t('admin.search', 'Поиск...')}
                 value={activeSearchQuery}
                 onChange={(e) => setActiveSearchQuery(e.target.value)}
-                className="input pl-9 py-2 text-sm w-full"
+                className="input pl-9 py-2 text-base w-full"
               />
             </div>
 

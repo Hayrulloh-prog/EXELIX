@@ -45,11 +45,11 @@ function PWADetector({ children }: { children: React.ReactNode }) {
 function App() {
 
   return (
-    <PWADetector>
-      <I18nextProvider i18n={i18n}>
-        <ThemeProvider>
-          <Router>
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider>
+        <Router>
+          <PWADetector>
+            <div className="h-[100dvh] bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
               <Header />
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -137,10 +137,10 @@ function App() {
               }}
             />
           </div>
+          </PWADetector>
         </Router>
       </ThemeProvider>
     </I18nextProvider>
-    </PWADetector>
   );
 }
 
