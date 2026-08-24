@@ -46,22 +46,22 @@ function App() {
       <ThemeProvider>
         <Router>
           <PWADetector>
-            <div className="h-[100dvh] bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
+          <div className="h-[100dvh] bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
               <Header />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/login-success" element={<LoginSuccessPage />} />
-              <Route path="/qr" element={<QRScanPage />} />
-              <Route path="/qr/:token" element={<QRScanPage />} />
-              <Route path="/notify" element={<NotificationPage />} />
-              <Route path="/notify/:token" element={<NotificationPage />} />
-              <Route path="/dashboard" element={<UserDashboard />} />
-              <Route path="/dashboard/notifications" element={<NotificationsPage />} />
-              <Route path="/user/:id" element={<UserDashboard />} />
-              <Route path="/user/:id/notifications" element={<NotificationsPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-            </Routes>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/login-success" element={<LoginSuccessPage />} />
+                <Route path="/qr" element={<QRScanPage />} />
+                <Route path="/qr/:token" element={<QRScanPage />} />
+                <Route path="/notify" element={<NotificationPage />} />
+                <Route path="/notify/:token" element={<NotificationPage />} />
+                <Route path="/dashboard" element={<UserDashboard />} />
+                <Route path="/dashboard/notifications" element={<NotificationsPage />} />
+                <Route path="/user/:id" element={<UserDashboard />} />
+                <Route path="/user/:id/notifications" element={<NotificationsPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+              </Routes>
             <Toaster
               position="top-center"
               toastOptions={{
